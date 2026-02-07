@@ -14,7 +14,7 @@ class GeminiService {
             female: this.getFemaleTemplate()
         };
         
-        console.log('🤖 GeminiService initialisé');
+        console.log('[AI] GeminiService initialisé');
     }
     
     // ==================== TEMPLATES ====================
@@ -185,7 +185,7 @@ J) FINAL DELIVERABLE
      */
     async generatePrompt(frenchText, gender) {
         try {
-            console.log('🤖 Génération du prompt en cours...');
+            console.log('[AI] Génération du prompt en cours...');
             
             // Sélectionner le template approprié
             const template = this.templates[gender];
@@ -254,7 +254,7 @@ GÉNÈRE UN PROMPT PROFESSIONNEL EN ANGLAIS qui:
             if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                 const generatedText = data.candidates[0].content.parts[0].text.trim();
                 
-                console.log('✅ Prompt généré avec succès');
+                console.log('[OK] Prompt généré avec succès');
                 return {
                     success: true,
                     englishText: generatedText
@@ -264,7 +264,7 @@ GÉNÈRE UN PROMPT PROFESSIONNEL EN ANGLAIS qui:
             }
             
         } catch (error) {
-            console.error('❌ Erreur génération Gemini:', error);
+            console.error('[ERROR] Erreur génération Gemini:', error);
             return {
                 success: false,
                 error: error.message
@@ -330,7 +330,7 @@ GÉNÈRE LE PROMPT MODIFIÉ EN ANGLAIS:`;
             if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                 const modifiedText = data.candidates[0].content.parts[0].text.trim();
                 
-                console.log('✅ Modifications appliquées avec succès');
+                console.log('[OK] Modifications appliquées avec succès');
                 return {
                     success: true,
                     englishText: modifiedText
@@ -340,7 +340,7 @@ GÉNÈRE LE PROMPT MODIFIÉ EN ANGLAIS:`;
             }
             
         } catch (error) {
-            console.error('❌ Erreur modification:', error);
+            console.error('[ERROR] Erreur modification:', error);
             return {
                 success: false,
                 error: error.message
@@ -354,4 +354,4 @@ GÉNÈRE LE PROMPT MODIFIÉ EN ANGLAIS:`;
 // Créer l'instance globale
 window.GEMINI = new GeminiService();
 
-console.log('✅ GeminiService prêt');
+console.log('[OK] GeminiService prêt');

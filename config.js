@@ -47,4 +47,4 @@ const CONFIG = {
 // Export config
 window.CONFIG = CONFIG;
 
-console.log('✅ Configuration chargée - v' + CONFIG.APP_VERSION);
+console.log('[OK] Configuration chargée - v' + CONFIG.APP_VERSION);

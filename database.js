@@ -9,7 +9,7 @@ class DatabaseManager {
         this.isConnected = false;
         this.localCache = new Map();
         
-        console.log('💾 DatabaseManager initialisé');
+        console.log('[DB] DatabaseManager initialisé');
     }
     
     // ==================== MONGODB CONNECTION ====================
@@ -19,7 +19,7 @@ class DatabaseManager {
      */
     async testConnection() {
         try {
-            console.log('🔌 Test de connexion MongoDB...');
+            console.log('[CONNECT] Test de connexion MongoDB...');
             
             const response = await fetch('/api/test-connection', {
                 method: 'POST',
@@ -32,14 +32,14 @@ class DatabaseManager {
             
             if (data.success) {
                 this.isConnected = true;
-                console.log('✅ Connexion MongoDB réussie');
+                console.log('[OK] Connexion MongoDB réussie');
                 return { success: true, message: 'Connexion réussie' };
             } else {
                 throw new Error(data.error || 'Échec de connexion');
             }
             
         } catch (error) {
-            console.error('❌ Erreur de connexion:', error);
+            console.error('[ERROR] Erreur de connexion:', error);
             this.isConnected = false;
             return { success: false, error: error.message };
         }
@@ -52,7 +52,7 @@ class DatabaseManager {
      */
     async savePrompt(promptData) {
         try {
-            console.log('💾 Sauvegarde du prompt...');
+            console.log('[DB] Sauvegarde du prompt...');
             
             // Préparer les données
             const prompt = {
@@ -81,7 +81,7 @@ class DatabaseManager {
             const data = await response.json();
             
             if (data.success) {
-                console.log('✅ Prompt sauvegardé avec succès');
+                console.log('[OK] Prompt sauvegardé avec succès');
                 prompt._id = data.promptId;
                 this.localCache.set(data.promptId, prompt);
                 return { success: true, promptId: data.promptId, prompt };
@@ -90,7 +90,7 @@ class DatabaseManager {
             }
             
         } catch (error) {
-            console.error('❌ Erreur de sauvegarde:', error);
+            console.error('[ERROR] Erreur de sauvegarde:', error);
             return { success: false, error: error.message };
         }
     }
@@ -113,7 +113,7 @@ class DatabaseManager {
             const data = await response.json();
             
             if (data.success) {
-                console.log(`✅ ${data.prompts.length} prompts récupérés`);
+                console.log(`[OK] ${data.prompts.length} prompts récupérés`);
                 
                 // Mettre à jour le cache local
                 data.prompts.forEach(prompt => {
@@ -126,7 +126,7 @@ class DatabaseManager {
             }
             
         } catch (error) {
-            console.error('❌ Erreur de récupération:', error);
+            console.error('[ERROR] Erreur de récupération:', error);
             
             // Fallback sur le localStorage
             const localPrompts = this.getFromLocalStorage();
@@ -160,7 +160,7 @@ class DatabaseManager {
             const data = await response.json();
             
             if (data.success) {
-                console.log('✅ Prompt mis à jour avec succès');
+                console.log('[OK] Prompt mis à jour avec succès');
                 
                 // Mettre à jour le cache
                 if (this.localCache.has(promptId)) {
@@ -174,7 +174,7 @@ class DatabaseManager {
             }
             
         } catch (error) {
-            console.error('❌ Erreur de mise à jour:', error);
+            console.error('[ERROR] Erreur de mise à jour:', error);
             return { success: false, error: error.message };
         }
     }
@@ -197,7 +197,7 @@ class DatabaseManager {
             const data = await response.json();
             
             if (data.success) {
-                console.log('✅ Prompt supprimé avec succès');
+                console.log('[OK] Prompt supprimé avec succès');
                 
                 // Supprimer du cache
                 this.localCache.delete(promptId);
@@ -208,7 +208,7 @@ class DatabaseManager {
             }
             
         } catch (error) {
-            console.error('❌ Erreur de suppression:', error);
+            console.error('[ERROR] Erreur de suppression:', error);
             return { success: false, error: error.message };
         }
     }
@@ -224,10 +224,10 @@ class DatabaseManager {
             const newPrompts = [prompt, ...existingPrompts.slice(0, 49)]; // Garder max 50
             
             localStorage.setItem('djaidani_prompts', JSON.stringify(newPrompts));
-            console.log('💾 Sauvegardé en local');
+            console.log('[DB] Sauvegardé en local');
             
         } catch (error) {
-            console.error('❌ Erreur localStorage:', error);
+            console.error('[ERROR] Erreur localStorage:', error);
         }
     }
     
@@ -239,7 +239,7 @@ class DatabaseManager {
             const stored = localStorage.getItem('djaidani_prompts');
             return stored ? JSON.parse(stored) : [];
         } catch (error) {
-            console.error('❌ Erreur lecture localStorage:', error);
+            console.error('[ERROR] Erreur lecture localStorage:', error);
             return [];
         }
     }
@@ -253,7 +253,7 @@ class DatabaseManager {
             console.log('🗑️ LocalStorage effacé');
             return { success: true };
         } catch (error) {
-            console.error('❌ Erreur effacement:', error);
+            console.error('[ERROR] Erreur effacement:', error);
             return { success: false, error: error.message };
         }
     }
@@ -280,7 +280,7 @@ class DatabaseManager {
             };
             
         } catch (error) {
-            console.error('❌ Erreur stats:', error);
+            console.error('[ERROR] Erreur stats:', error);
             return {
                 total: 0,
                 byGender: { male: 0, female: 0 },
@@ -302,7 +302,7 @@ class DatabaseManager {
                 .slice(0, limit);
                 
         } catch (error) {
-            console.error('❌ Erreur prompts récents:', error);
+            console.error('[ERROR] Erreur prompts récents:', error);
             return [];
         }
     }
@@ -326,14 +326,14 @@ class DatabaseManager {
                     new Date().toISOString()
                 );
                 
-                console.log('✅ Synchronisation réussie');
+                console.log('[OK] Synchronisation réussie');
                 return { success: true, count: result.prompts.length };
             } else {
                 throw new Error('Échec de synchronisation');
             }
             
         } catch (error) {
-            console.error('❌ Erreur de synchronisation:', error);
+            console.error('[ERROR] Erreur de synchronisation:', error);
             return { success: false, error: error.message };
         }
     }
@@ -371,11 +371,11 @@ class DatabaseManager {
             
             URL.revokeObjectURL(url);
             
-            console.log('✅ Données exportées');
+            console.log('[OK] Données exportées');
             return { success: true };
             
         } catch (error) {
-            console.error('❌ Erreur export:', error);
+            console.error('[ERROR] Erreur export:', error);
             return { success: false, error: error.message };
         }
     }
@@ -401,11 +401,11 @@ class DatabaseManager {
                 if (result.success) successCount++;
             }
             
-            console.log(`✅ ${successCount}/${data.length} prompts importés`);
+            console.log(`[OK] ${successCount}/${data.length} prompts importés`);
             return { success: true, count: successCount, total: data.length };
             
         } catch (error) {
-            console.error('❌ Erreur import:', error);
+            console.error('[ERROR] Erreur import:', error);
             return { success: false, error: error.message };
         }
     }
@@ -416,4 +416,4 @@ class DatabaseManager {
 // Créer l'instance globale
 window.DB = new DatabaseManager();
 
-console.log('✅ DatabaseManager prêt');
+console.log('[OK] DatabaseManager prêt');

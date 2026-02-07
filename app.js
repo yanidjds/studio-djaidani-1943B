@@ -22,7 +22,7 @@ class StudioApp {
         // Références DOM
         this.elements = {};
         
-        console.log('🚀 Studio Photo Djaidani - Initialisation...');
+        console.log('[INIT] Studio Photo Djaidani - Initialisation...');
         this.init();
     }
     
@@ -38,7 +38,7 @@ class StudioApp {
     
     async setup() {
         try {
-            console.log('⚙️ Configuration de l'application...');
+            console.log('[CONFIG] Configuration de l'application...');
             
             // Cacher le loader
             this.hideLoader();
@@ -58,11 +58,11 @@ class StudioApp {
             // Tester la connexion DB
             this.testDBConnection();
             
-            console.log('✅ Application prête !');
+            console.log('[OK] Application prête !');
             this.showToast('Application chargée avec succès', 'success');
             
         } catch (error) {
-            console.error('❌ Erreur setup:', error);
+            console.error('[ERROR] Erreur setup:', error);
             this.showToast('Erreur lors du chargement', 'error');
         }
     }
@@ -138,7 +138,7 @@ class StudioApp {
     // ==================== ÉVÉNEMENTS ====================
     
     initEventListeners() {
-        console.log('🔧 Initialisation des événements...');
+        console.log('[SETUP] Initialisation des événements...');
         
         // Navigation
         this.elements.navBtns.forEach(btn => {
@@ -267,13 +267,13 @@ class StudioApp {
             });
         }
         
-        console.log('✅ Événements initialisés');
+        console.log('[OK] Événements initialisés');
     }
     
     // ==================== NAVIGATION ====================
     
     switchView(viewName) {
-        console.log(`📄 Changement de vue: ${this.currentView} → ${viewName}`);
+        console.log(`[VIEW] Changement de vue: ${this.currentView} → ${viewName}`);
         
         // Cacher toutes les vues
         document.querySelectorAll('.view-section').forEach(view => {
@@ -309,7 +309,7 @@ class StudioApp {
     }
     
     goToStep(stepNumber) {
-        console.log(`➡️ Passage à l'étape ${stepNumber}`);
+        console.log(`[STEP] Passage à l'étape ${stepNumber}`);
         this.currentStep = stepNumber;
         
         // Cacher toutes les étapes
@@ -414,7 +414,7 @@ class StudioApp {
             }
             
         } catch (error) {
-            console.error('❌ Erreur génération:', error);
+            console.error('[ERROR] Erreur génération:', error);
             this.showToast('Erreur lors de la génération: ' + error.message, 'error');
         } finally {
             this.elements.generateBtn.disabled = false;
@@ -468,7 +468,7 @@ class StudioApp {
             }
             
         } catch (error) {
-            console.error('❌ Erreur modifications:', error);
+            console.error('[ERROR] Erreur modifications:', error);
             this.showToast('Erreur: ' + error.message, 'error');
         } finally {
             this.elements.applyModificationBtn.disabled = false;
@@ -501,7 +501,7 @@ class StudioApp {
             await navigator.clipboard.writeText(this.formData.englishText);
             this.showToast('Copié dans le presse-papier !', 'success');
         } catch (error) {
-            console.error('❌ Erreur copie:', error);
+            console.error('[ERROR] Erreur copie:', error);
             this.showToast('Impossible de copier', 'error');
         }
     }
@@ -518,7 +518,7 @@ class StudioApp {
             
             this.showToast('Prompt téléchargé !', 'success');
         } catch (error) {
-            console.error('❌ Erreur téléchargement:', error);
+            console.error('[ERROR] Erreur téléchargement:', error);
             this.showToast('Erreur de téléchargement', 'error');
         }
     }
@@ -546,7 +546,7 @@ class StudioApp {
             }
             
         } catch (error) {
-            console.error('❌ Erreur sauvegarde:', error);
+            console.error('[ERROR] Erreur sauvegarde:', error);
             this.showToast('Erreur: ' + error.message, 'error');
         }
     }
@@ -555,7 +555,7 @@ class StudioApp {
     
     async loadInitialData() {
         try {
-            console.log('📥 Chargement des données...');
+            console.log('[DATA] Chargement des données...');
             
             // Charger les stats
             const stats = await DB.getStats();
@@ -566,7 +566,7 @@ class StudioApp {
             this.displayRecentPrompts(recentPrompts);
             
         } catch (error) {
-            console.error('❌ Erreur chargement:', error);
+            console.error('[ERROR] Erreur chargement:', error);
         }
     }
     
@@ -633,14 +633,14 @@ class StudioApp {
     
     async loadArchives() {
         try {
-            console.log('📂 Chargement des archives...');
+            console.log('[LOAD] Chargement des archives...');
             const result = await DB.getAllPrompts();
             
             this.allPrompts = result.prompts || [];
             this.filterArchives();
             
         } catch (error) {
-            console.error('❌ Erreur archives:', error);
+            console.error('[ERROR] Erreur archives:', error);
             this.showToast('Erreur de chargement des archives', 'error');
         }
     }
@@ -710,7 +710,7 @@ class StudioApp {
                 throw new Error(result.error);
             }
         } catch (error) {
-            console.error('❌ Erreur suppression:', error);
+            console.error('[ERROR] Erreur suppression:', error);
             this.showToast('Erreur de suppression', 'error');
         }
     }
@@ -763,7 +763,7 @@ class StudioApp {
                 throw new Error(result.error);
             }
         } catch (error) {
-            console.error('❌ Erreur sync:', error);
+            console.error('[ERROR] Erreur sync:', error);
             this.showToast('Erreur de synchronisation', 'error');
         }
     }
@@ -863,4 +863,4 @@ class StudioApp {
 // Créer l'instance globale
 window.app = new StudioApp();
 
-console.log('✅ Application Studio Photo Djaidani chargée');
+console.log('[OK] Application Studio Photo Djaidani chargée');
