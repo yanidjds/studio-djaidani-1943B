@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Studio Photo Djaidani 1943 - Générateur de prompts professionnels pour portraits patriotiques algériens">
+    <meta name="keywords" content="photo, studio, Algérie, portrait, prompt, AI">
+    <meta name="author" content="Studio Photo Djaidani 1943">
+    
+    <title>Studio Photo Djaidani - Fondé 1943</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>📸</text></svg>">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+    
+    <!-- ==================== LOADER ==================== -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Chargement...</p>
+        </div>
+    </div>
+    
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo -->
+                <div class="logo">
+                    <i class="fas fa-camera-retro"></i>
+                    <div class="logo-text">
+                        <h1>Studio Photo Djaidani</h1>
+                        <p>Fondé 1943</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation Desktop -->
+                <nav class="nav-menu">
+                    <button class="nav-btn active" data-view="home">
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </button>
+                    <button class="nav-btn" data-view="create">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Nouveau</span>
+                    </button>
+                    <button class="nav-btn" data-view="archives">
+                        <i class="fas fa-archive"></i>
+                        <span>Archives</span>
+                    </button>
+                    <button class="nav-btn" data-view="sync">
+                        <i class="fas fa-sync"></i>
+                        <span>Synchronisation</span>
+                    </button>
+                </nav>
+                
+                <!-- Actions -->
+                <div class="header-actions">
+                    <button id="themeToggle" class="icon-btn" title="Changer de thème">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="mobileMenuToggle" class="icon-btn mobile-only">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+        
+        <!-- ==================== VUE ACCUEIL ==================== -->
+        <section id="homeView" class="view-section active">
+            <div class="container">
+                
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h2 class="hero-title">
+                            Créez des prompts professionnels
+                            <span class="highlight">en quelques clics</span>
+                        </h2>
+                        <p class="hero-description">
+                            Transformez vos descriptions françaises en prompts anglais professionnels 
+                            pour générer des portraits patriotiques algériens ultra-réalistes.
+                        </p>
+                        <button class="cta-button">
+                            <i class="fas fa-magic"></i>
+                            Créer un prompt
+                        </button>
+                    </div>
+                    <div class="hero-illustration">
+                        <div class="illustration-card">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalPrompts">0</h3>
+                            <p>Prompts créés</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="lastActivity">-</h3>
+                            <p>Dernière activité</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>2</h3>
+                            <p>Langues supportées</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Prompts Récents -->
+                <div class="section-header">
+                    <h3>Prompts récents</h3>
+                    <button class="btn-link" onclick="app.switchView('archives')">
+                        Voir tout <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <div id="recentPromptsGrid" class="prompts-grid">
+                    <!-- Les prompts seront chargés dynamiquement -->
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>Aucun prompt pour le moment</p>
+                        <button class="btn-secondary" onclick="app.switchView('create')">
+                            Créer votre premier prompt
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- ==================== VUE CRÉATION ==================== -->
+        <section id="createView" class="view-section">
+            <div class="container">
+                
+                <div class="page-header">
+                    <h2>Créez votre prompt</h2>
+                    <p>Suivez les étapes pour générer un prompt professionnel</p>
+                </div>
+                
+                <!-- Indicateur d'étapes -->
+                <div class="steps-indicator">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Genre</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Texte</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Génération</div>
+                    </div>
+                </div>
+                
+                <!-- Formulaire de création -->
+                <div class="creation-form">
+                    
+                    <!-- ÉTAPE 1: Sélection du genre -->
+                    <div id="step1" class="step-content">
+                        <h3 class="step-title">Sélectionnez le genre</h3>
+                        <p class="step-description">Choisissez le genre pour adapter le template de prompt</p>
+                        
+                        <div class="gender-selection">
+                            <div class="gender-card" data-gender="male">
+                                <div class="gender-icon">
+                                    <i class="fas fa-male"></i>
+                                </div>
+                                <h4>Garçon</h4>
+                                <p>Portrait masculin avec costume formel</p>
+                                <div class="gender-check">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="gender-card" data-gender="female">
+                                <div class="gender-icon">
+                                    <i class="fas fa-female"></i>
+                                </div>
+                                <h4>Fille</h4>
+                                <p>Portrait féminin avec tenue élégante</p>
+                                <div class="gender-check">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ÉTAPE 2: Saisie du texte français -->
+                    <div id="step2" class="step-content" style="display: none;">
+                        <h3 class="step-title">Décrivez votre vision</h3>
+                        <p class="step-description">Écrivez en français, nous transformerons en prompt professionnel en anglais</p>
+                        
+                        <div class="form-group">
+                            <label for="promptTitle">
+                                <i class="fas fa-heading"></i>
+                                Titre du prompt (optionnel)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="promptTitle" 
+                                class="form-input" 
+                                placeholder="Ex: Portrait Spider-Man urbain"
+                                maxlength="100"
+                            >
+                            <small class="form-hint">Donnez un titre pour retrouver facilement ce prompt</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="frenchText">
+                                <i class="fas fa-pen"></i>
+                                Votre texte en français <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                id="frenchText" 
+                                class="form-textarea" 
+                                rows="12"
+                                placeholder="Exemple: Une prise de vue cinématographique photoréaliste en plongée montre un homme, avec le visage téléchargé utilisé comme référence, portant un costume détaillé rouge et bleu de Spider-Man..."
+                                required
+                            ></textarea>
+                            <div class="text-stats">
+                                <span id="wordCount">0 mots</span>
+                                <span id="charCount">0 / 5000 caractères</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn-secondary" onclick="app.goToStep(1)">
+                                <i class="fas fa-arrow-left"></i>
+                                Retour
+                            </button>
+                            <button id="generateBtn" class="btn-primary">
+                                <i class="fas fa-magic"></i>
+                                Générer le prompt professionnel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- ÉTAPE 3: Résultat et modifications -->
+                    <div id="step3" class="step-content" style="display: none;">
+                        <h3 class="step-title">Prompt généré avec succès !</h3>
+                        <p class="step-description">Voici votre prompt professionnel en anglais</p>
+                        
+                        <div class="result-container">
+                            <div class="result-header">
+                                <h4>
+                                    <i class="fas fa-language"></i>
+                                    Prompt anglais professionnel
+                                </h4>
+                                <div class="result-actions">
+                                    <button class="icon-btn" id="copyBtn" title="Copier">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="icon-btn" id="downloadBtn" title="Télécharger">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="result-content">
+                                <pre id="englishOutput" class="english-output">Votre prompt apparaîtra ici...</pre>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Modifications -->
+                        <div class="modifications-section">
+                            <h4>
+                                <i class="fas fa-edit"></i>
+                                Besoin de modifier quelque chose ?
+                            </h4>
+                            <p>Décrivez vos modifications en français, elles seront appliquées au prompt professionnel</p>
+                            
+                            <div class="form-group">
+                                <textarea 
+                                    id="modificationText" 
+                                    class="form-textarea" 
+                                    rows="4"
+                                    placeholder="Ex: L'âge doit être de 15 ans, pas un adulte. Ajouter plus de détails sur l'arrière-plan..."
+                                ></textarea>
+                            </div>
+                            
+                            <button id="applyModificationBtn" class="btn-primary">
+                                <i class="fas fa-refresh"></i>
+                                Appliquer les modifications
+                            </button>
+                        </div>
+                        
+                        <!-- Historique des modifications -->
+                        <div id="modificationsHistory" class="modifications-history" style="display: none;">
+                            <h4>
+                                <i class="fas fa-history"></i>
+                                Historique des modifications
+                            </h4>
+                            <div id="historyList" class="history-list">
+                                <!-- Les modifications apparaîtront ici -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button class="btn-secondary" onclick="app.goToStep(2)">
+                                <i class="fas fa-arrow-left"></i>
+                                Modifier le texte original
+                            </button>
+                            <button id="savePromptBtn" class="btn-success">
+                                <i class="fas fa-save"></i>
+                                Sauvegarder le prompt
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- ==================== VUE ARCHIVES ==================== -->
+        <section id="archivesView" class="view-section">
+            <div class="container">
+                
+                <div class="page-header">
+                    <h2>Archives des prompts</h2>
+                    <p>Retrouvez tous vos prompts sauvegardés</p>
+                </div>
+                
+                <!-- Barre de recherche et filtres -->
+                <div class="archives-toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Rechercher un prompt..."
+                            class="search-input"
+                        >
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="genderFilter" class="filter-select">
+                            <option value="">Tous les genres</option>
+                            <option value="male">Garçon</option>
+                            <option value="female">Fille</option>
+                        </select>
+                        
+                        <select id="sortFilter" class="filter-select">
+                            <option value="recent">Plus récent</option>
+                            <option value="oldest">Plus ancien</option>
+                            <option value="title">Titre (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Grille des prompts -->
+                <div id="archivesGrid" class="prompts-grid">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Aucun prompt sauvegardé</p>
+                        <button class="btn-secondary" onclick="app.switchView('create')">
+                            Créer votre premier prompt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div id="pagination" class="pagination" style="display: none;">
+                    <button class="page-btn" id="prevPage">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div id="pageNumbers" class="page-numbers"></div>
+                    <button class="page-btn" id="nextPage">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- ==================== VUE SYNCHRONISATION ==================== -->
+        <section id="syncView" class="view-section">
+            <div class="container">
+                
+                <div class="page-header">
+                    <h2>Synchronisation</h2>
+                    <p>Synchronisez vos prompts entre tous vos appareils</p>
+                </div>
+                
+                <div class="sync-container">
+                    
+                    <!-- État de la connexion -->
+                    <div class="sync-card">
+                        <div class="sync-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="sync-info">
+                            <h3>Connexion MongoDB</h3>
+                            <p id="dbStatus" class="status-text">
+                                <span class="status-badge status-checking">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    Vérification...
+                                </span>
+                            </p>
+                        </div>
+                        <button id="testConnectionBtn" class="btn-secondary">
+                            <i class="fas fa-plug"></i>
+                            Tester la connexion
+                        </button>
+                    </div>
+                    
+                    <!-- Synchronisation manuelle -->
+                    <div class="sync-card">
+                        <div class="sync-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="sync-info">
+                            <h3>Synchronisation manuelle</h3>
+                            <p>Dernière synchronisation: <span id="lastSync">Jamais</span></p>
+                        </div>
+                        <button id="syncNowBtn" class="btn-primary">
+                            <i class="fas fa-sync"></i>
+                            Synchroniser maintenant
+                        </button>
+                    </div>
+                    
+                    <!-- Options de synchronisation -->
+                    <div class="sync-settings">
+                        <h3>
+                            <i class="fas fa-cog"></i>
+                            Options de synchronisation
+                        </h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Synchronisation automatique</h4>
+                                <p>Synchroniser automatiquement après chaque modification</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoSyncToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Sauvegarde locale</h4>
+                                <p>Garder une copie locale en cas de perte de connexion</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="localBackupToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions de données -->
+                    <div class="data-actions">
+                        <h3>
+                            <i class="fas fa-database"></i>
+                            Gestion des données
+                        </h3>
+                        
+                        <div class="action-buttons">
+                            <button id="exportDataBtn" class="btn-outline">
+                                <i class="fas fa-file-export"></i>
+                                Exporter les données
+                            </button>
+                            
+                            <button id="importDataBtn" class="btn-outline">
+                                <i class="fas fa-file-import"></i>
+                                Importer des données
+                            </button>
+                            
+                            <button id="clearLocalBtn" class="btn-danger-outline">
+                                <i class="fas fa-trash"></i>
+                                Effacer les données locales
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- ==================== TOAST CONTAINER ==================== -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- ==================== MODAL CONFIRMATION ==================== -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirmation</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Êtes-vous sûr ?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modalCancel">Annuler</button>
+                <button class="btn-danger" id="modalConfirm">Confirmer</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="config.js"></script>
+    <script src="database.js"></script>
+    <script src="gemini.js"></script>
+    <script src="app.js"></script>
+    
+</body>
+</html>
